@@ -1,16 +1,17 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = [
   // Add support for native node modules
   {
     test: /\.node$/,
-    use: "node-loader",
+    use: 'node-loader',
   },
   {
     test: /\.jsx?$/,
     use: {
-      loader: "babel-loader",
+      loader: 'babel-loader',
       options: {
         exclude: /node_modules/,
-        presets: ["@babel/preset-react"],
       },
     },
   },
@@ -18,9 +19,9 @@ module.exports = [
     test: /\.(m?js|node)$/,
     parser: { amd: false },
     use: {
-      loader: "@marshallofsound/webpack-asset-relocator-loader",
+      loader: '@marshallofsound/webpack-asset-relocator-loader',
       options: {
-        outputAssetBase: "native_modules",
+        outputAssetBase: 'native_modules',
       },
     },
   },
@@ -28,10 +29,22 @@ module.exports = [
     test: /\.tsx?$/,
     exclude: /(node_modules|\.webpack)/,
     use: {
-      loader: "ts-loader",
+      loader: 'ts-loader',
       options: {
         transpileOnly: true,
       },
     },
+  },
+  {
+    test: /\.(le|c)ss$/i,
+    use: [
+      // Creates `style` nodes from JS strings
+      MiniCssExtractPlugin.loader,
+      // Translates CSS into CommonJS
+      'css-loader',
+      'postcss-loader',
+      // Compiles Sass to CSS
+      'less-loader',
+    ],
   },
 ];

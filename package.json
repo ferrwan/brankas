@@ -1,8 +1,8 @@
 {
-  "name": "reactron-todo",
-  "productName": "reactron-todo",
+  "name": "brankas",
+  "productName": "brankas",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Your vault companion",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -17,6 +17,10 @@
     "email": "ferrwanz@gmail.com"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=14.16.1",
+    "yarn": ">=1.20"
+  },
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -64,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.13.13",
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
@@ -77,6 +82,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
+    "autoprefixer": "^9.8.6",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.2",
     "electron": "^12.0.4",
@@ -84,14 +90,23 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.23.2",
     "fork-ts-checker-webpack-plugin": "^6.2.1",
+    "less": "^4.1.1",
+    "less-loader": "^7.3.0",
+    "mini-css-extract-plugin": "^1.5.0",
     "node-loader": "^2.0.0",
+    "postcss": "^8.2.10",
+    "postcss-loader": "^4.2.0",
     "prettier": "^2.2.1",
     "source-map-support": "^0.5.19",
     "style-loader": "^2.0.0",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended": "^4.0.0",
     "ts-loader": "^9.0.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "webpack": "4.46.0"
   },
   "dependencies": {
+    "antd": "^4.15.2",
     "electron-squirrel-startup": "^1.0.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
