@@ -1,0 +1,15 @@
+{
+  "data": {
+    "passwords": [
+      {
+        "id": 1,
+        "name": "Bukalapak",
+        "url": "https://www.bukalapak.com",
+        "user": "dummy",
+        "password": "dummy1",
+        "note": "",
+        "folder": ""
+      }
+    ]
+  }
+}
