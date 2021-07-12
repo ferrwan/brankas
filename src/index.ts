@@ -1,12 +1,14 @@
 import {
-  app, BrowserWindow, session, screen, ipcMain,
+  app, BrowserWindow, screen, ipcMain,
 } from 'electron';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer';
 import path from 'path';
-import os from 'os';
 import fs from 'fs';
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 const isProd = app.isPackaged;
 let mainWindow: BrowserWindow;
@@ -35,9 +37,8 @@ const createWindow = (): void => {
 
 app.whenReady().then(async () => {
   if (!isProd) {
-    // Load React dev tool extension on developement
-    const reactDevToolsPath = '/home/ferrwan/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.12.2_0';
-    await session.defaultSession.loadExtension(reactDevToolsPath);
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .catch((err) => console.warn('Error installing React DevTool', err));
   }
 });
 // This method will be called when Electron has finished
@@ -67,8 +68,10 @@ app.on('activate', () => {
 
 ipcMain.on('getFile', () => {
   fs.readFile(path.resolve('data/data.json'), 'utf-8', (err, data) => {
-    console.log('FILE READED', data);
-    if (data) {
+    if (err) {
+      console.error('ERROR when reading Vault Data');
+      console.error(err);
+    } else if (data) {
       mainWindow.webContents.send('createData', data);
     }
   });

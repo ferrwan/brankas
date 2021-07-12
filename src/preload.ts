@@ -1,10 +1,9 @@
-const { contextBridge, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer } from 'electron';
 
-contextBridge.exposeInMainWorld('bridge', {
+const bridge: Bridge = {
   send: (channel: string, data: any) => {
     const validChannels: string[] = ['createData', 'getFile'];
     if (validChannels.includes(channel)) {
-      console.log(channel, data);
       ipcRenderer.send(channel, data);
     }
   },
@@ -14,4 +13,6 @@ contextBridge.exposeInMainWorld('bridge', {
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   },
-});
+};
+
+contextBridge.exposeInMainWorld('bridge', bridge);

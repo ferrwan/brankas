@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { getThemeVariables } = require('antd/dist/theme');
 
 module.exports = [
   // Add support for native node modules
@@ -51,6 +52,9 @@ module.exports = [
         loader: 'less-loader',
         options: {
           lessOptions: {
+            modifyVars: getThemeVariables({
+              dark: true,
+            }),
             javascriptEnabled: true,
           },
         },

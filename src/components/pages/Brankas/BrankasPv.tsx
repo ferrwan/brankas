@@ -1,83 +1,56 @@
-import { Layout, Menu } from 'antd';
 import * as React from 'react';
+import { Layout } from 'antd';
 
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import SidebarOv from '../../organisms/SidebarOv/SidebarOv';
+import PasswordTv from '../../templates/PasswordTv/PasswordTv';
 
 function Home() {
   return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 function Users() {
   return <h2>Users</h2>;
 }
 
-const { bridge } = window as any;
+const { Content } = Layout;
 
-const { Content, Sider } = Layout;
+const initialVault: Vault = {
+  pwds: [],
+};
 
-type Props = {
+const Brankas: React.VFC<EmptyObject> = () => {
+  const [vault, setVault] = React.useState(initialVault);
 
-}
-
-type State = {
-  vault: any,
-}
-
-class Brankas extends React.Component<Props, State> {
-  componentDidMount() {
+  React.useEffect(() => {
     bridge.send('getFile');
-  }
+    bridge.receive('createData', (vaultData: string) => {
+      const { data = initialVault } = JSON.parse(vaultData);
+      setVault(data);
+    });
+  }, []);
 
-  render() {
-    return (
-      <Layout>
-        <Sider
-          style={{
-            overflow: 'auto',
-            height: '100vh',
-            position: 'fixed',
-            left: 0,
-          }}
-        >
-          <Menu theme="dark" mode="inline">
-            <Menu.Item key="home">
-              <Link to="/">Home</Link>
-            </Menu.Item>
-            <Menu.Item key="about">
-              <Link to="/about">About</Link>
-            </Menu.Item>
-            <Menu.Item key="users">
-              <Link to="/users">Users</Link>
-            </Menu.Item>
-          </Menu>
-        </Sider>
+  return (
+    <Layout>
+      <SidebarOv />
 
-        <Layout style={{ marginLeft: 200 }}>
-          <Content>
-            <Switch>
-              <Route path="/about">
-                <About />
-              </Route>
-              <Route path="/users">
-                <Users />
-              </Route>
-              <Route exact path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Content>
-        </Layout>
+      <Layout style={{ marginLeft: 200 }}>
+        <Content>
+          <Switch>
+            <Route path="/passwords">
+              <PasswordTv pwds={vault.pwds} />
+            </Route>
+            <Route path="/notes">
+              <Users />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Content>
       </Layout>
-    );
-  }
-}
-
-bridge.receive('createData', (data: any) => {
-  console.log('RECEIVEC', data);
-});
+    </Layout>
+  );
+};
 
 export default Brankas;
