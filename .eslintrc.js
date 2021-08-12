@@ -32,6 +32,7 @@ module.exports = {
   rules: {
     'no-use-before-define': 'off',
     'no-shadow': 'off',
+    'no-console': [1, { allow: ['warn', 'error'] }],
     'import/extensions': [
       'error',
       'ignorePackages',

@@ -37,8 +37,7 @@ const createWindow = (): void => {
 
 app.whenReady().then(async () => {
   if (!isProd) {
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .catch((err) => console.warn('Error installing React DevTool', err));
+    installExtension(REACT_DEVELOPER_TOOLS).catch((err) => console.warn('Error installing React DevTool', err));
   }
 });
 // This method will be called when Electron has finished
