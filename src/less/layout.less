@@ -1,0 +1,30 @@
+@spaceRange: 10;
+@base4Px: 4;
+@base6Px: 6;
+@p-list: p, pv, ph, pt, pb, r, pl;
+@m-list: m, mv, mh, mt, mb, mr, ml;
+
+.spaceGeneratorr(@space4, @space6) {
+  each(@p-list, {
+    .@{value}&-@{space4} {
+      padding: @space4 + 0px;
+    }
+    .@{value}&-@{space6} {
+      padding: @space6 + 0px;
+    }
+  });
+  each(@m-list, {
+    .@{value}&-@{space4} {
+      margin: @space4;
+    }
+    .@{value}&-@{space6} {
+      margin: @space6;
+    }
+  });
+}
+
+each(range(@spaceRange), {
+  @count4Px: @value * @base4Px;
+  @count6Px: @value * @base6Px;
+  .spaceGeneratorr(@count4Px, @count6Px);
+});

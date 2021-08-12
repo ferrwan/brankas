@@ -1,4 +1,4 @@
-declare interface Pwds {
+declare interface Pwd {
   id: number;
   name: string;
   url: string;
@@ -9,5 +9,9 @@ declare interface Pwds {
 }
 
 declare interface Vault {
-  pwds: Pwds[];
+  pwds: Pwd[];
+}
+
+declare interface RouteParams {
+  pwdId: string;
 }
