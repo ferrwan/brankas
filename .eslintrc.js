@@ -46,6 +46,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'react/jsx-one-expression-per-line': 0,
     'react/prop-types': 0,
     'react-hooks/rules-of-hooks': 2,
   },

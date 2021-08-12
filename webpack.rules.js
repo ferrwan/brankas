@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { getThemeVariables } = require('antd/dist/theme');
 
 module.exports = [
   // Add support for native node modules
@@ -42,7 +41,9 @@ module.exports = [
       // Creates `style` nodes from JS strings
       {
         loader:
-          process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
+          process.env.NODE_ENV === 'production'
+            ? MiniCssExtractPlugin.loader
+            : 'style-loader',
       },
       // Translates CSS into CommonJS
       { loader: 'css-loader' },
@@ -52,9 +53,6 @@ module.exports = [
         loader: 'less-loader',
         options: {
           lessOptions: {
-            modifyVars: getThemeVariables({
-              dark: true,
-            }),
             javascriptEnabled: true,
           },
         },
