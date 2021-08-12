@@ -1,0 +1,33 @@
+{
+  "data": {
+    "pwds": [
+      {
+        "id": 1,
+        "name": "First Password",
+        "url": "https://www.secret-url.com",
+        "user": "dummy",
+        "password": "dummy1",
+        "note": "",
+        "folder": ""
+      },
+      {
+        "id": 2,
+        "name": "Second Password",
+        "url": "https://www.secret-url.com",
+        "user": "dummy",
+        "password": "dummy1",
+        "note": "",
+        "folder": ""
+      },
+      {
+        "id": 3,
+        "name": "Third Password",
+        "url": "https://www.secret-url.com/login",
+        "user": "dummy3",
+        "password": "dummy3",
+        "note": "Some note here. Random description with emoji 🐒",
+        "folder": "Banks"
+      }
+    ]
+  }
+}

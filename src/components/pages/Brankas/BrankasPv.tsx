@@ -1,53 +1,57 @@
 import * as React from 'react';
+import { Layout } from 'antd';
 
-import {
-  HashRouter as Router, Switch, Route, Link,
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
+
+import SidebarOv from '../../organisms/SidebarOv/SidebarOv';
+import PasswordListTv from '../../templates/PasswordListTv';
+import NoteTv from '../../templates/NoteTv';
 
 function Home() {
   return <h2>Home</h2>;
 }
 
-function About() {
-  return <h2>About</h2>;
-}
+const { Content } = Layout;
 
-function Users() {
-  return <h2>Users</h2>;
-}
+const initialVault: Vault = {
+  pwds: [],
+};
 
-const Brankas = (): JSX.Element => (
-  <Router>
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-        </ul>
-      </nav>
+const Brankas: React.VFC<EmptyObject> = () => {
+  const [vault, setVault] = React.useState(initialVault);
 
-      {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-      <Switch>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/users">
-          <Users />
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </div>
-  </Router>
-);
+  React.useEffect(() => {
+    bridge.send('getFile');
+    bridge.receive('createData', (vaultData: string) => {
+      const { data = initialVault } = JSON.parse(vaultData);
+      setVault(data);
+    });
+  }, []);
+
+  return (
+    <Layout>
+      <SidebarOv />
+
+      <Layout style={{ marginLeft: 200 }}>
+        <Content>
+          <Switch>
+            <Route path="/passwords">
+              <PasswordListTv pwds={vault.pwds} />
+            </Route>
+            <Route path="/notes">
+              <NoteTv />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="*">
+              <Redirect to={{ pathname: '/' }} />
+            </Route>
+          </Switch>
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
 
 export default Brankas;

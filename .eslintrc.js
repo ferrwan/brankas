@@ -12,7 +12,7 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
   ],
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
@@ -21,6 +21,7 @@ module.exports = {
     },
   },
   settings: {
+    'import/core-modules': ['electron'],
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -30,7 +31,8 @@ module.exports = {
   },
   rules: {
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    'no-shadow': 'off',
+    'no-console': [1, { allow: ['warn', 'error'] }],
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -41,10 +43,29 @@ module.exports = {
         tsx: 'never',
       },
     ],
-
-    'no-shadow': 'off',
+    'import/prefer-default-export': 0,
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/no-unused-vars': 'off',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    '@typescript-eslint/no-use-before-define': ['error'],
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'react/jsx-one-expression-per-line': 0,
+    'react/prop-types': 0,
+    'react-hooks/rules-of-hooks': 2,
   },
+  overrides: [
+    {
+      files: ['**/*.test.js'],
+      rules: {
+        'prefer-promise-reject-errors': 0,
+      },
+    },
+    {
+      files: ['webpack.*.js'],
+      rules: {
+        'import/no-extraneous-dependencies': 0,
+        'import/extensions': 0,
+        '@typescript-eslint/no-var-requires': 0,
+      },
+    },
+  ],
 };

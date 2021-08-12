@@ -39,12 +39,24 @@ module.exports = [
     test: /\.(le|c)ss$/i,
     use: [
       // Creates `style` nodes from JS strings
-      MiniCssExtractPlugin.loader,
+      {
+        loader:
+          process.env.NODE_ENV === 'production'
+            ? MiniCssExtractPlugin.loader
+            : 'style-loader',
+      },
       // Translates CSS into CommonJS
-      'css-loader',
-      'postcss-loader',
+      { loader: 'css-loader' },
+      { loader: 'postcss-loader' },
       // Compiles Sass to CSS
-      'less-loader',
+      {
+        loader: 'less-loader',
+        options: {
+          lessOptions: {
+            javascriptEnabled: true,
+          },
+        },
+      },
     ],
   },
 ];

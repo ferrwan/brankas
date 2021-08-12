@@ -1,0 +1,23 @@
+@range: 6;
+@baseFontSize: 12;
+@smallSize: 8, 10;
+@mediumSize: 14, 18;
+@listSizes: @smallSize, @mediumSize;
+
+.setSizes(@sizes) {
+  each(@sizes, {
+    .f-@{value} {
+      font-size: @value + 0px;
+    }
+  });
+}
+each(@listSizes, {
+  .setSizes(@value);
+});
+
+each(range(@range), {
+  @size: @value * @baseFontSize;
+  .f-@{size} {
+    font-size: @size + 0px;
+  }
+});

@@ -1,12 +1,17 @@
 import {
-  app, BrowserWindow, session, screen,
+  app, BrowserWindow, screen, ipcMain,
 } from 'electron';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer';
 import path from 'path';
-import os from 'os';
+import fs from 'fs';
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 const isProd = app.isPackaged;
+let mainWindow: BrowserWindow;
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) {
@@ -16,26 +21,23 @@ if (require('electron-squirrel-startup')) {
 const createWindow = (): void => {
   // Create the browser window.
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const mainWindow = new BrowserWindow({
-    height: Math.min(height, 722),
-    width: Math.min(width, 1192),
+  mainWindow = new BrowserWindow({
+    height: height - 200,
+    width: width - 300,
     webPreferences: {
-      nodeIntegration: true,
+      enableRemoteModule: false,
+      contextIsolation: true,
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(async () => {
   if (!isProd) {
-    // Load React dev tool extension on developement
-    const reactDevToolsPath = '/home/ferrwan/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.12.2_0';
-    await session.defaultSession.loadExtension(reactDevToolsPath);
+    installExtension(REACT_DEVELOPER_TOOLS).catch((err) => console.warn('Error installing React DevTool', err));
   }
 });
 // This method will be called when Electron has finished
@@ -62,3 +64,14 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on('getFile', () => {
+  fs.readFile(path.resolve('data/data.json'), 'utf-8', (err, data) => {
+    if (err) {
+      console.error('ERROR when reading Vault Data');
+      console.error(err);
+    } else if (data) {
+      mainWindow.webContents.send('createData', data);
+    }
+  });
+});
