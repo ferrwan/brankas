@@ -10,6 +10,7 @@ declare interface Pwd {
 
 declare interface Vault {
   pwds: Pwd[];
+  folders: string[];
 }
 
 declare interface RouteParams {

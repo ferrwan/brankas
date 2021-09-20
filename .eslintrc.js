@@ -26,6 +26,9 @@ module.exports = {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
+      webpack: {
+        config: 'webpack.renderer.config.js',
+      },
       typescript: {},
     },
   },
