@@ -4,8 +4,8 @@ import {
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
-import path from 'path';
-import fs from 'fs';
+
+import FileEngine from './ts/server/file-engine';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -30,6 +30,7 @@ const createWindow = (): void => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
+  FileEngine({ mainWindow });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -64,14 +65,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-
-ipcMain.on('getFile', () => {
-  fs.readFile(path.resolve('data/data.json'), 'utf-8', (err, data) => {
-    if (err) {
-      console.error('ERROR when reading Vault Data');
-      console.error(err);
-    } else if (data) {
-      mainWindow.webContents.send('createData', data);
-    }
-  });
-});
