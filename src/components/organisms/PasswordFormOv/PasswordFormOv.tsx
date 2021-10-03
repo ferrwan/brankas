@@ -10,9 +10,11 @@ type Props = {
   pwd: Pwd;
 };
 
-function replaceItemAtIndex(arr: Pwd[], index: number, newValue: Pwd) {
-  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
-}
+const replaceItemAtIndex = (arr: Pwd[], index: number, newValue: Pwd) => [
+  ...arr.slice(0, index),
+  newValue,
+  ...arr.slice(index + 1),
+];
 
 const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(ALPHABET, 10);
