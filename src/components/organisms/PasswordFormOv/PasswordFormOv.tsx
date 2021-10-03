@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Button, Form, Input } from 'antd';
+import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { customAlphabet } from 'nanoid';
 
 import { pwdsState } from '../../../recoil/vault-state';
 
@@ -12,7 +14,10 @@ function replaceItemAtIndex(arr: Pwd[], index: number, newValue: Pwd) {
   return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
 }
 
+const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(ALPHABET, 10);
 const forms = [
+  { name: 'name', label: 'Name' },
   { name: 'user', label: 'User' },
   { name: 'password', label: 'Password' },
   { name: 'url', label: 'Website' },
@@ -26,13 +31,26 @@ const renderForms = () => forms.map((form) => (
 ));
 
 const PasswordFormOv: React.VFC<Props> = ({ pwd }) => {
+  const { pwdId } = useParams<RouteParams>();
   const [pwds, setPwds] = useRecoilState(pwdsState);
-  const index = pwds.findIndex((i) => i.id === pwd.id);
+  let newPwds = pwds;
   const onFinish = (values: Pwd) => {
-    const newPwds = replaceItemAtIndex(pwds, index, {
-      ...pwd,
-      ...values,
-    });
+    const now = Date.now();
+    if (pwdId === 'new') {
+      newPwds = pwds.concat({
+        ...values,
+        id: nanoid(),
+        createdAt: now,
+        updatedAt: now,
+      });
+    } else {
+      const index = pwds.findIndex((i) => i.id === pwd?.id);
+      newPwds = replaceItemAtIndex(pwds, index, {
+        ...pwd,
+        ...values,
+        updatedAt: now,
+      });
+    }
     setPwds(newPwds);
     bridge.send('saveData', { pwds: newPwds });
   };

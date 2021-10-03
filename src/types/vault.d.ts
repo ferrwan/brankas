@@ -1,11 +1,13 @@
 declare interface Pwd {
-  id: number;
+  id: string | number;
   name: string;
   url: string;
   user: string;
   password: string;
   note: string;
   folder: string;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 declare interface Vault {

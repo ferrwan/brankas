@@ -27,6 +27,7 @@ const PasswordListTv: React.VFC<Props> = ({ pwds }) => {
 
   return (
     <div className="p-48">
+      <Link to={`${url}/new`}>New</Link>
       <Switch>
         <Route path="/passwords" exact>
           <h1>Password Template</h1>

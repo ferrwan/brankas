@@ -3,7 +3,7 @@ import { Redirect, useParams, useHistory } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
-import PasswordFormOv from '~components/organisms/PasswordFormOv';
+import PasswordFormOv from '../../organisms/PasswordFormOv';
 
 type Props = {
   pwds: Pwd[];
@@ -26,14 +26,9 @@ const PasswordTv: React.VFC<Props> = ({ pwds }) => {
         type="primary"
         onClick={goBack}
       />
-      <h1>{pwd.name}</h1>
-      {pwd ? (
-        <div className="f-18">
-          <PasswordFormOv pwd={pwd} />
-        </div>
-      ) : (
-        <Redirect to={{ pathname: '/password' }} />
-      )}
+      <div className="f-18">
+        <PasswordFormOv pwd={pwd} />
+      </div>
     </div>
   );
 };
