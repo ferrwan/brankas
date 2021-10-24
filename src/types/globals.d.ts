@@ -6,7 +6,7 @@ declare interface IFunction {
 }
 
 declare interface Bridge {
-  send: (channel: string, data?: AnyObject) => void;
+  send: (channel: string, data?: unknown) => void;
   receive: (channel: string, func: IFunction) => void;
 }
 

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Layout } from 'antd';
-
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import SidebarOv from '../../organisms/SidebarOv/SidebarOv';
 import PasswordListTv from '../../templates/PasswordListTv';
 import NoteTv from '../../templates/NoteTv';
+import { pwdsState, vaultState } from '../../../recoil/vault-state';
 
 function Home() {
   return <h2>Home</h2>;
@@ -13,18 +14,14 @@ function Home() {
 
 const { Content } = Layout;
 
-const initialVault: Vault = {
-  pwds: [],
-};
-
 const Brankas: React.VFC<EmptyObject> = () => {
-  const [vault, setVault] = React.useState(initialVault);
+  const [pwds, setPwds] = useRecoilState(pwdsState);
 
   React.useEffect(() => {
     bridge.send('getFile');
     bridge.receive('createData', (vaultData: string) => {
-      const { data = initialVault } = JSON.parse(vaultData);
-      setVault(data);
+      const { data = vaultState } = JSON.parse(vaultData);
+      setPwds(data.pwds);
     });
   }, []);
 
@@ -36,7 +33,7 @@ const Brankas: React.VFC<EmptyObject> = () => {
         <Content>
           <Switch>
             <Route path="/passwords">
-              <PasswordListTv pwds={vault.pwds} />
+              <PasswordListTv pwds={pwds} />
             </Route>
             <Route path="/notes">
               <NoteTv />
